@@ -1,9 +1,9 @@
 services:
   vikunja:
     image: vikunja/vikunja:2.2.0
-    user: "1000:1000"
+    user: '1000:1000'
     environment:
-      VIKUNJA_SERVICE_PUBLICURL: http://umbrel.local:3456/
+      VIKUNJA_SERVICE_PUBLICURL: http://${DEVICE_DOMAIN_NAME}:3456/
       VIKUNJA_SERVICE_JWTSECRET: 869806469445c9db2053864702a93698eb1cd7d2ec77565400c86b69df852d0a
       VIKUNJA_DATABASE_PATH: /db/vikunja.db
     ports:
@@ -11,4 +11,5 @@ services:
     volumes:
       - .${APP_DATA_DIR}/data/config:/app/vikunja/files
       - .${APP_DATA_DIR}/data/db:/db
+      - .${APP_DATA_DIR}/data/.cache:/.cache
     restart: unless-stopped
