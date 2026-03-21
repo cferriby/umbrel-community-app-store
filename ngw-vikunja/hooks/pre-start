@@ -3,6 +3,8 @@ set -euo pipefail
 
 APP_DATA_DIR="$(readlink -f $(dirname "${BASH_SOURCE[0]}")/..)/data"
 
-# Recursively set ownership of all bind mounts to 1000:1000. wikijs was running as root for pre-2.5.306-1 installs
-# even though it was using "correct" PUID/PGID env vars for linuxserver.io images.
-chown -R 1000:1000 "${APP_DATA_DIR}"
+# Recursively set ownership of all bind mounts to 1000:1000
+# Also ensure proper permissions for Vikunja to write to these directories
+mkdir -p "${APP_DATA_DIR}/data/config" "${APP_DATA_DIR}/data/db"
+sudo chown -R 1000:1000 "${APP_DATA_DIR}"
+chmod -R 755 "${APP_DATA_DIR}"
