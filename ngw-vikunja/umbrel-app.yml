@@ -4,7 +4,7 @@ name: Vikunja
 tagline: A simple, open-source task management tool
 icon: https://svgur.com/i/mvA.svg
 category: Development
-version: "1.0.7"
+version: "1.0.8"
 port: 3456
 description: >-
   Add your app's description here.
