@@ -10,4 +10,5 @@ services:
     volumes:
       - .${APP_DATA_DIR}/data/config:/app/vikunja/files
       - .${APP_DATA_DIR}/data/db:/db
+      - .${APP_DATA_DIR}/data/.cache:/.cache
     restart: unless-stopped
