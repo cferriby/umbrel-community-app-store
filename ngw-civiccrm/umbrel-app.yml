@@ -4,7 +4,7 @@ name: Civic CRM
 tagline: Open-source constituent relationship management system
 icon: https://svgur.com/i/mvA.svg
 category: Administrative
-version: "1.0.1"
+version: "1.0.2"
 port: 8760
 description: >-
   Civic CRM is a powerful, open-source constituent relationship management 

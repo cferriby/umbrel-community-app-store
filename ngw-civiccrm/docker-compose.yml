@@ -29,7 +29,27 @@ services:
       MYSQL_USER: civicrm
       MYSQL_PASSWORD: asdivuhaihfdsjfhalskd
 volumes:
-  private: ./private
-  public: ./public
-  ext: ./ext
-  db: ./db
+  private:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: ./private
+  public:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: ./public
+  ext:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: ./ext
+  db:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: ./db
