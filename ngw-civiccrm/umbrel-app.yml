@@ -1,0 +1,30 @@
+manifestVersion: 1.1
+id: ngw-civiccrm
+name: Civic CRM
+tagline: Open-source constituent relationship management system
+icon: https://svgur.com/i/mvA.svg
+category: Administrative
+version: "1.0.0"
+port: 8760
+description: >-
+  Civic CRM is a powerful, open-source constituent relationship management 
+  system designed to help organizations manage their community interactions, 
+  volunteers, and stakeholders effectively.
+
+developer: Civic CRM Community
+website: https://civicrm.org/
+submitter: Civic CRM Community
+submission: https://github.com/umbrel-community-app-store
+repo: https://github.com/civicrm/civicrm-core
+support: https://github.com/civicrm/civicrm-core/issues
+gallery:
+  - https://i.imgur.com/yyVG0Jb.jpeg
+  - https://i.imgur.com/yyVG0Jb.jpeg
+  - https://i.imgur.com/yyVG0Jb.jpeg
+releaseNotes: >-
+  Initial release of Civic CRM for Umbrel.
+  Includes constituent management, volunteer coordination, and engagement tracking.
+dependencies: []
+path: ""
+defaultUsername: ""
+defaultPassword: ""
