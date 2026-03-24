@@ -29,7 +29,7 @@ services:
       MYSQL_USER: civicrm
       MYSQL_PASSWORD: asdivuhaihfdsjfhalskd
 volumes:
-  private:./private
-  public:./public
-  ext:./ext
-  db:./db
+  private: ./private
+  public: ./public
+  ext: ./ext
+  db: ./db
