@@ -1,30 +1,46 @@
 services:
   app:
-    hostname: example
+    hostname: app
     image: civicrm/civicrm:latest
     ports:
-      - 8760:80 # CiviCRM will be available on port 8760.
-    restart: unless-stopped
+      - 8760:80
+    restart: on-failure
+    depends_on:
+      mariadb:
+        condition: service_healthy
     volumes:
       - ./private:/var/www/html/private
       - ./public:/var/www/html/public
       - ./ext:/var/www/html/ext
     environment:
-      CIVICRM_DB_HOST: db
+      CIVICRM_DB_HOST: ngw-civiccrm_mariadb_1
       CIVICRM_DB_PORT: 3306
       CIVICRM_DB_NAME: civicrm
       CIVICRM_DB_USER: civicrm
-      CIVICRM_DB_PASSWORD: asdivuhaihfdsjfhalskd
-      # CIVICRM_DSN: mysql://civicrm:${MYSQL_PASSWORD}@db:3306/civicrm # Note: you can also pass database credentials as a DSN.
+      CIVICRM_DB_PASSWORD: civicrm
       CIVICRM_UF_BASEURL: http://localhost:8760
-  db:
-    hostname: db
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost/index.php"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+
+  mariadb:
+    hostname: mariadb
     image: mariadb:10.11
-    restart: unless-stopped
+    restart: on-failure
+    environment:
+      - MYSQL_ROOT_PASSWORD=civicrm
+      - MYSQL_USER=civicrm
+      - MYSQL_PASSWORD=civicrm
+      - MYSQL_DATABASE=civicrm
+      - MARIADB_AUTO_UPGRADE=1
+    command: ["--max-allowed-packet=128M", "--innodb-log-file-size=64M"]
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-u", "root", "--password=civicrm"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 60s
     volumes:
       - ./db:/var/lib/mysql
-    environment:
-      MYSQL_ROOT_PASSWORD: asdivuhaihfdsjfhalskd
-      MYSQL_DATABASE: civicrm
-      MYSQL_USER: civicrm
-      MYSQL_PASSWORD: asdivuhaihfdsjfhalskd
