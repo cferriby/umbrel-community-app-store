@@ -6,9 +6,9 @@ services:
       - 8760:80 # CiviCRM will be available on port 8760.
     restart: unless-stopped
     volumes:
-      - private:/var/www/html/private
-      - public:/var/www/html/public
-      - ext:/var/www/html/ext
+      - ./private:/var/www/html/private
+      - ./public:/var/www/html/public
+      - ./ext:/var/www/html/ext
     environment:
       CIVICRM_DB_HOST: db
       CIVICRM_DB_PORT: 3306
@@ -22,34 +22,9 @@ services:
     image: mariadb:10.11
     restart: unless-stopped
     volumes:
-      - db:/var/lib/mysql
+      - ./db:/var/lib/mysql
     environment:
       MYSQL_ROOT_PASSWORD: asdivuhaihfdsjfhalskd
       MYSQL_DATABASE: civicrm
       MYSQL_USER: civicrm
       MYSQL_PASSWORD: asdivuhaihfdsjfhalskd
-volumes:
-  private:
-    driver: local
-    driver_opts:
-      type: none
-      o: bind
-      device: ./private
-  public:
-    driver: local
-    driver_opts:
-      type: none
-      o: bind
-      device: ./public
-  ext:
-    driver: local
-    driver_opts:
-      type: none
-      o: bind
-      device: ./ext
-  db:
-    driver: local
-    driver_opts:
-      type: none
-      o: bind
-      device: ./db
