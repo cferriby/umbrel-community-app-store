@@ -1,46 +1,41 @@
 services:
   app:
-    hostname: app
     image: civicrm/civicrm:latest
+    restart: unless-stopped
     ports:
       - 8760:80
-    restart: on-failure
-    depends_on:
-      mariadb:
-        condition: service_healthy
     volumes:
       - ./private:/var/www/html/private
       - ./public:/var/www/html/public
       - ./ext:/var/www/html/ext
     environment:
-      CIVICRM_DB_HOST: ngw-civiccrm_mariadb_1
+      CIVICRM_DB_HOST: mariadb
       CIVICRM_DB_PORT: 3306
       CIVICRM_DB_NAME: civicrm
       CIVICRM_DB_USER: civicrm
       CIVICRM_DB_PASSWORD: civicrm
-      CIVICRM_UF_BASEURL: http://localhost:8760
-    healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost/index.php"]
-      interval: 30s
-      timeout: 10s
-      retries: 5
+      CIVICRM_DB_ROOT_PASSWORD: civicrm
+      CIVICRM_UF_BASEURL: "http://localhost:8760/"
+    depends_on:
+      - mariadb
 
   mariadb:
-    hostname: mariadb
     image: mariadb:10.11
-    restart: on-failure
+    restart: unless-stopped
     environment:
-      - MYSQL_ROOT_PASSWORD=civicrm
-      - MYSQL_USER=civicrm
-      - MYSQL_PASSWORD=civicrm
-      - MYSQL_DATABASE=civicrm
-      - MARIADB_AUTO_UPGRADE=1
-    command: ["--max-allowed-packet=128M", "--innodb-log-file-size=64M"]
-    healthcheck:
-      test: ["CMD", "mysqladmin", "ping", "-u", "root", "--password=civicrm"]
-      interval: 10s
-      timeout: 5s
-      retries: 10
-      start_period: 60s
+      MYSQL_ROOT_PASSWORD: civicrm
+      MYSQL_DATABASE: civicrm
+      MYSQL_USER: civicrm
+      MYSQL_PASSWORD: civicrm
     volumes:
       - ./db:/var/lib/mysql
+    command: 
+      - --max-allowed-packet=256M
+      - --innodb-log-file-size=100M
+      - --character-set-server=utf8mb4
+      - --collation-server=utf8mb4_unicode_ci
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 10s
+      timeout: 5s
+      retries: 20
