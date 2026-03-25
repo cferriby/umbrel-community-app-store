@@ -4,6 +4,7 @@ services:
     restart: unless-stopped
     ports:
       - 8760:80
+    user: "33:33"
     volumes:
       - ./private:/var/www/html/private
       - ./public:/var/www/html/public
@@ -13,29 +14,29 @@ services:
       CIVICRM_DB_PORT: 3306
       CIVICRM_DB_NAME: civicrm
       CIVICRM_DB_USER: civicrm
-      CIVICRM_DB_PASSWORD: civicrm
-      CIVICRM_DB_ROOT_PASSWORD: civicrm
-      CIVICRM_UF_BASEURL: "http://localhost:8760/"
+      CIVICRM_DB_PASSWORD: password123
     depends_on:
       - mariadb
 
   mariadb:
     image: mariadb:10.11
     restart: unless-stopped
+    user: "1000:1000"
     environment:
-      MYSQL_ROOT_PASSWORD: civicrm
+      MYSQL_ROOT_PASSWORD: root
       MYSQL_DATABASE: civicrm
       MYSQL_USER: civicrm
-      MYSQL_PASSWORD: civicrm
+      MYSQL_PASSWORD: password123
     volumes:
       - ./db:/var/lib/mysql
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
     command: 
       - --max-allowed-packet=256M
       - --innodb-log-file-size=100M
       - --character-set-server=utf8mb4
       - --collation-server=utf8mb4_unicode_ci
     healthcheck:
-      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "civicrm", "-ppassword123"]
       interval: 10s
       timeout: 5s
       retries: 20
